@@ -8,8 +8,8 @@ const GEMINI_KEY = process.env.GEMINI_API_KEY;
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, anthropic-version, x-api-key',
   'Content-Type': 'application/json'
 };
 
@@ -30,7 +30,8 @@ function proxy(req, res, hostname, path, headers) {
 
 http.createServer((req, res) => {
   if (req.method === 'OPTIONS') { res.writeHead(200, CORS_HEADERS); res.end(); return; }
-  if (req.method !== 'POST') { res.writeHead(200, CORS_HEADERS); res.end(JSON.stringify({ status: 'ARADP proxy running' })); return; }
+  if (req.method === 'GET') { res.writeHead(200, CORS_HEADERS); res.end(JSON.stringify({ status: 'ARADP proxy running' })); return; }
+  if (req.method !== 'POST') { res.writeHead(404, CORS_HEADERS); res.end(); return; }
 
   if (req.url === '/anthropic') {
     proxy(req, res, 'api.anthropic.com', '/v1/messages', {
