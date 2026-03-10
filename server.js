@@ -89,7 +89,7 @@ http.createServer((req, res) => {
     });
   } else if (req.url === '/gemini') {
     proxy(req, res, 'generativelanguage.googleapis.com',
-      '/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY, {
+      '/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_KEY, {
       'Content-Type': 'application/json'
     });
   } else {
